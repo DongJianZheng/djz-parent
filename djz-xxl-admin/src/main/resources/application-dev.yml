@@ -1,0 +1,74 @@
+management:
+  health:
+    mail:
+      enabled: false
+  server:
+    servlet:
+      context-path: /actuator
+mybatis:
+  mapper-locations: classpath:/mybatis-mapper/*Mapper.xml
+server:
+  port: 18003
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: scienceproject-job-admin
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.133.129:3306/file-preivew?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  freemarker:
+    charset: UTF-8
+    request-context-attribute: request
+    settings:
+      number_format: 0.##########
+    suffix: .ftl
+    templateLoaderPath: classpath:/templates/
+  mail:
+    host: smtp.qq.com
+    port: 25
+    username: xxx@qq.com
+    from: xxx@qq.com
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          starttls:
+            enable: true
+            required: true
+  mvc:
+    servlet:
+      load-on-startup: 0
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+xxl:
+  job:
+    accessToken: ''
+    i18n: zh_CN
+    logretentiondays: 30
+    triggerpool:
+      fast:
+        max: 200
+      slow:
+        max: 100
+
+logging:
+  config: classpath:logback-spring.xml
+  path: scienceproject-job-admin-logs
+  rootLevel: info

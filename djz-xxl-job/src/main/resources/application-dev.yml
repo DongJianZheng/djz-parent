@@ -1,0 +1,182 @@
+ecip:
+  devMode: true
+  appId: -5
+  logEnum: LOG_ENUM_BOTH
+  datasource-manage: true
+  enable-liquibase: true
+  enable-tenant: false
+  super-admin: false #单机版不用配置
+  #tenant-id: 1
+  dataCenterId: 1 # 高并发主键生成唯一
+  workerId: 1 # 高并发主键生成唯一，多节点改成不一样的值
+  xss:
+    skip-url: /bpmApiService/**
+    bpm:
+      # 自定义监听器文件上传本地路径信息，尽量使用绝对路径，避免相对路径被删除
+      monitor-folder: e:/projectdata/monitor/
+  client:
+    connect-timeout: 30 #单位秒lo
+    read-timeout: 30    #单位秒
+    write-timeout: 30   #单位秒
+    retry: 3
+server:
+  port: 18002
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+    remote_ip_header: x-forwarded-for
+    protocol_header: x-forwarded-proto
+    port-header: X-Forwarded-Port
+
+shiro-redis:
+  redis-manager:
+    deploy-mode: standalone #sentinel, cluster
+    host: ${spring.redis.host}:${spring.redis.port}
+    password: ${spring.redis.password}
+    database: ${spring.redis.database}
+    expire: ${spring.redis.expireTime}
+
+spring:
+  application:
+    name: scienceproject-job-api
+  liquibase:
+    enabled: true
+    contexts: "init,!test"
+  cache:
+    ehcache:
+      config: ehcache/ehcache.xml
+    type: redis
+  redis:
+    host: 10.173.235.110
+    port: 6379
+    database: 6
+    #password: 123456
+    expireTime: 86400
+    lettuce:
+      pool:
+        max-active: 16
+        max-wait: 1s
+        max-idle: 8
+        min-idle: 4
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+
+  datasource:
+    dynamic:
+      druid:
+        filters: stat # 注意这个值和druid原生不一致，默认启动了stat,wall
+        max-active: 100
+        min-idle: 10
+        max-wait: 60000
+        remove-abandoned-timeout-millis: 180
+        remove-abandoned: false
+      datasource:
+        master:
+          # 后缀加上&nullCatalogMeansCurrent=true是为了避免DatabaseMetaData.getTables()加载了全部的无关表，否则会使系统报错
+          url: jdbc:mysql://192.168.133.129:3306/file-preivew?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+          username: root
+          password: UPKp/brQLD14tk1KFSvog1l+VvcUhfQqs1it9PlEwxGXMPWsr80sBhRwHu4c9v8XeS6QsBZ2VqeiNRHy8l6Ulg==
+          druid: #这里可以重写默认值
+            validationQuery: SELECT 'x'
+            public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIbwvHXRZA+jDQRcc/XcBOOZVlyQMLl24Kgza7zLcrRM8FgDq3CovaXfdh4sOqTV5HbhbBS9FQd+96frRGrAFQ8CAwEAAQ==
+
+  messages:
+    encoding: UTF-8
+
+mybatis-plus:
+  configurationProperties:
+    prefix:
+    blobType: BLOB #postgresql: BINARY
+    boolValue: TRUE #db2,mssql,oracle：1
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations:
+    - classpath*:/com/djz/**/*Mapper.xml
+    - classpath*:/META-INF/modeler-mybatis-mappings/*.xml
+    - classpath*:/mapper/*Mapper.xml
+    - classpath*:/mappings/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  #  typeAliasesPackage: com.hgsoft.*.*.*.entity
+  global-config:
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: input
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      field-strategy: NOT_NULL
+      #驼峰下划线转换
+      #        db-column-underline: true
+      #mp2.3+ 全局表前缀 mp_
+      #table-prefix: mp_
+      #刷新mapper 调试神器
+      #refresh-mapper: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      # Sequence序列接口实现类配置
+      #    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+      #逻辑删除配置（下面3个配置）
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      #    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+      #自定义填充策略接口实现
+    #    meta-object-handler: com.baomidou.springboot.MyMetaObjectHandler
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: 'null'
+
+
+xxl:
+  job:
+    admin:
+      addresses: http://localhost:18003
+    accessToken:
+    executor:
+      appname: preview-job-executor
+      ip:
+      address:
+      port: 28002
+      logpath: scienceproject-logs/scienceproject-job-executor/
+      logretentiondays: 30
+
+science:
+  vue: http://localhost:9009
+  ftp:
+    ip: 10.173.235.110
+    user: ftpuser1
+    pwd: 123456
+    port: 21
+    rootDir: /test/11
+    previewDir: /test/11/preview
+  preview:
+    enable: true
+    #预览生成资源路径（默认为打包根路径下的file目录下）
+    fileDir: D:/kkFileview/
+    office:
+      #office的home
+      home: D:/dev/test/kkFileView-4.1.0-SNAPSHOT/windows-office
+      ## office转换服务的进程数，默认开启两个进程
+      ports: 2011
+      ## office 转换服务 task 超时时间，默认五分钟
+      timeout: 5m
+  alarm:
+    maxAlarmCnt: 1
+
+logging:
+  root-level: debug
+  file:
+    path: .
+preview:
+  ftp:
+    ip: 192.168.133.129
+    user: ftp
+    pwd: 123456
+    port: 21
+    rootDir: /djz
+    previewDir: /djz/preview

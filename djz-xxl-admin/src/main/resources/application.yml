@@ -1,0 +1,6 @@
+spring:
+  profiles:
+        active: dev #开发
+    #    active: test #测试
+    #    active: pro  #演示，生产
+#    active: my  #本地
