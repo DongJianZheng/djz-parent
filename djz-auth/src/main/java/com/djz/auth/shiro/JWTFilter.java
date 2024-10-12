@@ -21,6 +21,16 @@ import javax.servlet.http.HttpServletResponse;
  * @author djz
  *
  * 代码的执行流程preHandle->isAccessAllowed->isLoginAttempt->executeLogin
+ *
+ * 整体请求流程可以简化为：
+ *
+ * 调用 preHandle()
+ * 调用 isAccessAllowed()
+ * 调用 isLoginAttempt()
+ * 若为登录请求，调用 executeLogin()
+ * 调用 setUserBean()
+ * (如果 wasAccessAllowed() 返回 false) 调用 onAccessDenied()
+ * 这个流程确保了安全地处理请求，同时根据用户的认证和授权状态提供相应的访问权限或错误信息。
  */
 @Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
@@ -104,4 +114,34 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         }
         return super.preHandle(request, response);
     }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        // 检查是否有授权
+        if (isLoginRequest(request, response)) {
+            // 如果是登录请求，允许继续处理
+            return true;
+        }
+
+        // 检查当前用户是否已登录
+        if (getSubject(request, response).isAuthenticated()) {
+            // 如果已登录但未授权，返回403 Forbidden
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"error\": \"You do not have permission to access this resource.\"}");
+            response.getWriter().flush();
+            // 中止请求处理
+            return false;
+        } else {
+            // 如果未登录，返回401 Unauthorized
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"error\": \"Unauthorized access. Please log in.\"}");
+            response.getWriter().flush();
+            // 中止请求处理
+            return false;
+        }
+    }
+
+
 }

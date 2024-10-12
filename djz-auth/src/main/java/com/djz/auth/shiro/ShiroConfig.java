@@ -79,7 +79,7 @@ public class ShiroConfig {
 
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt", new JWTFilter());
+        filterMap.put("jwt", new OAuth2Filter());
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(securityManager);
         /*
@@ -101,6 +101,10 @@ public class ShiroConfig {
         // 所有请求通过我们自己的JWT Filter
         filterRuleMap.put("/**", "jwt");
         filterRuleMap.putAll(getUrlAndMethodSet());
+
+
+
+
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }
