@@ -1,0 +1,40 @@
+spring:
+  redis:
+    host: 10.173.235.110
+    port: 6379
+    database: 6
+    #password: 123456
+    expireTime: 86400
+    lettuce:
+      pool:
+        max-active: 16
+        max-wait: 1s
+        max-idle: 8
+        min-idle: 4
+  freemarker:
+    template-loader-path: classpath:/web/
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    settings:
+      classic_compatible: true
+    suffix: .ftl
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          # 后缀加上&nullCatalogMeansCurrent=true是为了避免DatabaseMetaData.getTables()加载了全部的无关表，否则会使系统报错
+          url: jdbc:mysql://127.0.0.1:3306/djz_db?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+          username: root
+          password: UPKp/brQLD14tk1KFSvog1l+VvcUhfQqs1it9PlEwxGXMPWsr80sBhRwHu4c9v8XeS6QsBZ2VqeiNRHy8l6Ulg==
+          druid: #这里可以重写默认值
+            validationQuery: SELECT 'x'
+            public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIbwvHXRZA+jDQRcc/XcBOOZVlyQMLl24Kgza7zLcrRM8FgDq3CovaXfdh4sOqTV5HbhbBS9FQd+96frRGrAFQ8CAwEAAQ==
+logging:
+  root-level: debug
+  file:
+    path: .

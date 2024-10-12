@@ -1,0 +1,72 @@
+server:
+  port: 18080
+  servlet:
+    context-path: /
+
+shiro:
+  enabled: true
+  web:
+    enabled: true
+
+spring:
+  application:
+    name: preview
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  profiles:
+    active: dev
+  autoconfigure:
+    # 排除 Druid 自动配置
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+    datasource:
+      # 指定使用 Druid 数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
+      dynamic:
+        #设置默认的数据源或者数据源组,默认值即为 master
+        primary: master
+      druid:
+        # 初始连接数
+        initialSize: 5
+        # 最小连接池数量
+        minIdle: 10
+        # 最大连接池数量
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 300000
+        # 配置一个连接在池中最大生存的时间，单位是毫秒
+        maxEvictableIdleTimeMillis: 900000
+        # 配置检测连接是否有效
+        validationQuery: SELECT 1
+  freemarker:
+    template-loader-path: classpath:/web/
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    settings:
+      classic_compatible: true
+    suffix: .ftl
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false # 数据库下划线自动转驼峰标示关闭
+  mapper-locations:
+    - classpath*:/com/djz/**/*Mapper.xml
+preview:
+  ftp:
+    ip: 192.168.133.129
+    user: ftp
+    pwd: 123456
+    port: 21
+    rootDir: /djz
+    previewDir: /djz/preview
