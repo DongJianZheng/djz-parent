@@ -17,7 +17,8 @@
 
 	<modules>
 		<module>djz-common</module>
-		<module>djz-login</module>
+		<module>djz-common-web</module>
+		<module>djz-auth</module>
 		<module>djz-manage</module>
 		<module>djz-preview</module>
 		<module>djz-xxl-admin</module>
@@ -32,17 +33,56 @@
 		<java.version>1.8</java.version>
 		<mybatis-spring-boot.version>3.1.0</mybatis-spring-boot.version>
 		<durid.version>1.2.11</durid.version>
+		<reflections.version>0.9.10</reflections.version>
 		<dynamic.version>3.5.1</dynamic.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-auth</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-common-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-manage</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-preview-job</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.djz</groupId>
+				<artifactId>djz-preview-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis-spring-boot.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus</artifactId>
+				<version>${mybatis-spring-boot.version}</version>
+			</dependency>
+
+
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid-spring-boot-starter</artifactId>
@@ -81,26 +121,7 @@
 				<artifactId>mysql-connector-java</artifactId>
 				<version>8.0.21</version>
 			</dependency>
-			<dependency>
-				<groupId>com.djz</groupId>
-				<artifactId>djz-login</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.djz</groupId>
-				<artifactId>djz-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.djz</groupId>
-				<artifactId>djz-manage</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.djz</groupId>
-				<artifactId>djz-preview-job</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-redis</artifactId>
@@ -152,37 +173,8 @@
 				<artifactId>concurrentlinkedhashmap-lru</artifactId>
 				<version>1.4.2</version>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.pdfbox</groupId>
-				<artifactId>pdfbox</artifactId>
-				<version>2.0.24</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.pdfbox</groupId>
-				<artifactId>pdfbox-tools</artifactId>
-				<version>2.0.15</version>
-			</dependency>
 
 
-
-			<!-- url 规范化 -->
-			<dependency>
-				<groupId>io.mola.galimatias</groupId>
-				<artifactId>galimatias</artifactId>
-				<version>0.2.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.lowagie</groupId>
-				<artifactId>itext</artifactId>
-				<version>2.1.7</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hyperic</groupId>
-				<artifactId>sigar</artifactId>
-				<version>1.6.5.132</version>
-				<optional>true</optional>
-			</dependency>
 			<dependency>
 				<groupId>org.json</groupId>
 				<artifactId>json</artifactId>
@@ -203,6 +195,12 @@
 			<!--shiro-->
 			<dependency>
 				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring</artifactId>
+				<version>1.8.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-spring-boot-starter</artifactId>
 				<version>1.8.0</version>
 			</dependency>
@@ -218,7 +216,33 @@
 				<artifactId>java-jwt</artifactId>
 				<version>3.7.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>${reflections.version}</version>
+			</dependency>
 
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.83</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>1.8.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring</artifactId>
+				<version>1.8.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.oltu.oauth2</groupId>
+				<artifactId>org.apache.oltu.oauth2.client</artifactId>
+				<version>1.0.1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
